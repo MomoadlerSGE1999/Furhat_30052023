@@ -49,7 +49,7 @@ dependencies {
     compile 'com.furhatrobotics.assets:StandardLibraryCollection:1.2.0'
     implementation 'com.google.zxing:core:3.4.1'
     implementation("org.zeromq:jeromq:+")
-    implementation 'org.zeromq:zeromq-java:+'
+    //implementation 'org.zeromq:zeromq-java:+'
 }
 
 jar {

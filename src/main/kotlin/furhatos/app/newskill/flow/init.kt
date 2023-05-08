@@ -16,10 +16,6 @@ import furhatos.records.User
 val Init : State = state() {
     init {
 
-        //Jeweils zum Start des Skills wird die Variable Benutzer initialisiert und mit null überschrieben, sodass
-        //Informationen über den Nutzer mit Benutzer!!.put() während des Skills gespeichert werden können
-        var Benutzer: User? = null
-
         //Der dialogLogger sorgt dafür, dass die Gespräche mit Furhat unter
         //dem Pfad: C:\Users\Benutzer\.furhat\logs protokolliert werden.
         dialogLogger.startSession()
@@ -40,6 +36,8 @@ val Init : State = state() {
         users.setSimpleEngagementPolicy(distanceToEngage, maxNumberOfUsers)
 
         furhat.cameraFeed.enable()
+        furhat.cameraFeed.isOpen()
+        furhat.say("${furhat.cameraFeed.isOpen()}")
         furhat.cameraFeed.port()
         println("${furhat.cameraFeed.port()}")
         furhat.say("${furhat.cameraFeed.port()}")

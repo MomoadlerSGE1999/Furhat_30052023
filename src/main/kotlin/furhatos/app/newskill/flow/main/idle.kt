@@ -13,7 +13,7 @@ furhat.setVoice(Language.GERMAN, Gender.MALE)
         when {
             users.count > 0 -> {
                 furhat.attend(users.random)
-                goto(greeting1)
+                goto(greeting13)
             }
             users.count == 0 && furhat.isVirtual() -> furhat.say("Ich sehe niemanden, bitte füge einen virtuellen Nutzer hinzu ")
             users.count == 0 && !furhat.isVirtual() -> furhat.say("Ich kann niemanden sehen, bitte komm näher ")
@@ -26,6 +26,6 @@ furhat.setVoice(Language.GERMAN, Gender.MALE)
 
     onUserEnter {
         furhat.attend(it)
-        goto(greeting1)
+        goto(greeting13)
     }
 }
