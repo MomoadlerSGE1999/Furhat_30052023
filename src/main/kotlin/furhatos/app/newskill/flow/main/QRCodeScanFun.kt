@@ -30,7 +30,7 @@ fun scanBarcode(Image: BufferedImage): String? {
         val reader = MultiFormatReader()
 
         val hints: MutableMap<DecodeHintType, Any> = mutableMapOf()
-        hints[DecodeHintType.POSSIBLE_FORMATS] = BarcodeFormat.QR_CODE // Adjust this for other barcode formats if needed
+        hints[DecodeHintType.POSSIBLE_FORMATS] = BarcodeFormat.QR_CODE// Adjust this for other barcode formats if needed
 
         val result: Result = reader.decode(bitmap, hints)
         return result.text
@@ -51,20 +51,24 @@ fun getIntArray(image: BufferedImage): IntArray {
 fun ConnectBarcodeReaderWithZMQPort(Benutzer: User) {
     val context = ZContext()
     val socket = context.createSocket(SocketType.SUB)
+
+
     socket.connect("tcp://IP-Adresse der Furhat-Kamera:Port der Kamera") // Replace with the appropriate address and port
+    //// Verbindung zum ZMQ-Server herstellen
 
     var qrCodeDetected = false // Flag zur Überprüfung, ob ein QR-Code erkannt wurde
 
     // Empfange Bilder mit QR-Codes vom ZMQ-Server
     while (!qrCodeDetected) {
         socket.subscribe("".toByteArray())
-        val imageBytes = socket.recv()
-        val image: BufferedImage = ImageIO.read(ByteArrayInputStream(imageBytes))
+        val imageBytes = socket.recv() // Empfange ein Bild als Byte-Array vom ZMQ-Server
+        val image: BufferedImage = ImageIO.read(ByteArrayInputStream(imageBytes)) // Wandele das Byte-Array in ein BufferedImage um
 
-        val barcodeText = scanBarcode(image)
+        val barcodeText = scanBarcode(image) // QR-Code im Bild scannen und den Text erhalten
+
         if (barcodeText != null) {
             println("QR Code: $barcodeText")
-            Benutzer!!.put("QR Code Text", barcodeText)
+            Benutzer!!.put("QR Code Text", barcodeText) // Speichert den erkannten QR-Code-Text im Benutzerobjekt
 
 
             qrCodeDetected = true // Setze das Flag, um die Endlosschleife zu beenden
@@ -74,6 +78,6 @@ fun ConnectBarcodeReaderWithZMQPort(Benutzer: User) {
         Thread.sleep(500) // Füge eine Verzögerung von einer halben Sekunde ein
     }
 
-    socket.close()
-    context.close()
+    socket.close() // Socket schließen
+    context.close() // ZMQ-Kontext schließen
 }
